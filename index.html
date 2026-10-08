@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4efdf" />
+    <meta name="description" content="A completely rigged game of tic-tac-toe. You are X. The house is O. The house always wins." />
+    <title>Tic Tac Cheat — The House Always Wins</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <!-- Cinematic Round 1 / Fighter vs You Overlay -->
+    <div id="vs-overlay" class="vs-overlay" aria-hidden="true">
+      <div class="vs-backdrop">
+        <div class="vs-split-left"></div>
+        <div class="vs-split-right"></div>
+        <div class="vs-particles"></div>
+      </div>
+      
+      <div class="vs-content">
+        <div class="vs-round-badge">
+          <span class="vs-match-tag">THE ULTIMATE CLASH</span>
+          <h2 class="vs-round-title">ROUND <span id="vs-round-number">1</span></h2>
+        </div>
+
+        <div class="vs-battlefield">
+          <!-- Player Fighter -->
+          <div class="fighter-card fighter-player">
+            <div class="fighter-avatar-wrap">
+              <div class="fighter-avatar player-avatar">
+                <span class="avatar-letter">X</span>
+              </div>
+            </div>
+            <div class="fighter-info">
+              <span class="fighter-role">CHALLENGER</span>
+              <h3 class="fighter-name">YOU</h3>
+              <div class="fighter-stat">RULES: NORMAL TIC-TAC-TOE</div>
+            </div>
+          </div>
+
+          <!-- VS Emblem -->
+          <div class="vs-emblem-wrap">
+            <div class="vs-emblem">VS</div>
+            <div class="vs-lightning"></div>
+          </div>
+
+          <!-- Opponent Fighter (Dynamic: Balayya / Thalapathy) -->
+          <div class="fighter-card fighter-opponent" id="vs-opponent-card">
+            <div class="fighter-avatar-wrap">
+              <img id="vs-opponent-photo" src="./balayya.png" alt="Opponent" class="fighter-photo" />
+              <div class="lion-badge" id="vs-opponent-badge">🦁</div>
+            </div>
+            <div class="fighter-info">
+              <span class="fighter-role" id="vs-opponent-role">THE UNBEATABLE HOUSE</span>
+              <h3 class="fighter-name" id="vs-opponent-name">BALAYYA</h3>
+              <div class="fighter-stat" id="vs-opponent-stat">SPECIAL: UNLIMITED CHEATS & POWER</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vs-fight-banner" id="vs-fight-btn">
+          <span id="vs-fight-text">JAI BALAYYA · FIGHT!</span>
+        </div>
+
+        <div class="vs-skip-hint">CLICK ANYWHERE OR PRESS SPACE TO START</div>
+      </div>
+    </div>
+
+    <div class="ticker" aria-hidden="true">
+      <div>
+        LIVE ODDS · THE HOUSE IS FAVORED 100 TO 0 · COMPLIANCE RATING: AAA · REGULATION WAIVED · FAIR PLAY STATUS: SUSPENDED · HOUSE ADVANTAGE: 100% · ARBITRATION MANDATORY · LIVE ODDS · THE HOUSE IS FAVORED 100 TO 0 · COMPLIANCE RATING: AAA · REGULATION WAIVED · FAIR PLAY STATUS: SUSPENDED · HOUSE ADVANTAGE: 100% · ARBITRATION MANDATORY ·
+      </div>
+    </div>
+
+    <header class="masthead">
+      <!-- Character Mode Selector Carousel -->
+      <div class="carousel-container" aria-label="Select Opponent Mode">
+        <button id="carousel-prev" class="carousel-arrow" type="button" aria-label="Previous opponent">‹</button>
+        <div class="carousel-track">
+          <div class="carousel-item active" data-mode="balayya">
+            <img src="./balayya.png" alt="Balayya" class="carousel-avatar" />
+            <div class="carousel-text">
+              <strong>BALAYYA</strong>
+              <span>🦁 GOD OF MASSES</span>
+            </div>
+          </div>
+          <div class="carousel-item" data-mode="thalapathy">
+            <img src="./thalapathy.png" alt="Thalapathy" class="carousel-avatar" />
+            <div class="carousel-text">
+              <strong>THALAPATHY</strong>
+              <span>🔥 ILAYATHALAPATHY</span>
+            </div>
+          </div>
+        </div>
+        <button id="carousel-next" class="carousel-arrow" type="button" aria-label="Next opponent">›</button>
+      </div>
+
+      <div class="house-status">
+        <span></span>
+        <span id="masthead-status">HOUSE ENGINE: RIGGED & OPERATIONAL</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow" id="intro-eyebrow">UNAUTHORIZED COMPETITION DETECTED</p>
+        <h1 id="page-title">THINK YOU<br />CAN <span>WIN?</span></h1>
+        <p class="lede" id="intro-lede">You’re X. The house is O. Normal rules apply to you.</p>
+      </section>
+
+      <section class="game-shell" aria-label="Tic-tac-toe game">
+        <div class="game-topline">
+          <div>
+            <p id="status" class="status" aria-live="polite">Your move, hotshot.</p>
+          </div>
+          <div class="turn-pill"><span id="turn-dot"></span><span id="turn-label">YOUR TURN</span></div>
+        </div>
+
+        <div class="game-grid">
+          <div class="board-column-wrap">
+            <div class="board-wrapper">
+              <div id="board" class="board" role="grid" aria-label="Tic-tac-toe board">
+                <button type="button" role="gridcell" data-cell="0" aria-label="Top left, empty"></button>
+                <button type="button" role="gridcell" data-cell="1" aria-label="Top center, empty"></button>
+                <button type="button" role="gridcell" data-cell="2" aria-label="Top right, empty"></button>
+                <button type="button" role="gridcell" data-cell="3" aria-label="Middle left, empty"></button>
+                <button type="button" role="gridcell" data-cell="4" aria-label="Center, empty"></button>
+                <button type="button" role="gridcell" data-cell="5" aria-label="Middle right, empty"></button>
+                <button type="button" role="gridcell" data-cell="6" aria-label="Bottom left, empty"></button>
+                <button type="button" role="gridcell" data-cell="7" aria-label="Bottom center, empty"></button>
+                <button type="button" role="gridcell" data-cell="8" aria-label="Bottom right, empty"></button>
+              </div>
+
+              <!-- Floating Victory Video Fitting Exactly Over Tic Tac Toe Box -->
+              <div id="board-video-overlay" class="board-video-overlay" aria-hidden="true">
+                <video id="balayya-win-video" src="./balayya_win_video.mp4" playsinline preload="auto"></video>
+                <button id="close-board-video" class="close-board-video" type="button" aria-label="Close victory video">✕</button>
+              </div>
+            </div>
+
+            <button id="new-game" class="new-game" type="button">START ANOTHER RIGGED GAME <span>↗</span></button>
+          </div>
+
+          <aside class="scorecard" aria-label="Score and incident log">
+            <div class="score-head">
+              <p class="label">OFFICIAL SCORE</p>
+              <span>MATCH #<span id="match-number">001</span></span>
+            </div>
+            <div class="scores">
+              <div><span>YOU</span><strong id="player-score">0</strong></div>
+              <div class="house-score"><span id="house-name-label">BALAYYA (THE HOUSE)</span><strong id="ai-score">0</strong></div>
+            </div>
+            <div class="fine-print">* Score certified by the House Department of Scoring.</div>
+            <div class="log-head"><p class="label">INCIDENT REPORT</p><span id="incident-count">0 violations</span></div>
+            <ol id="incident-log" class="incident-log" aria-live="polite">
+              <li class="empty-log">Nothing suspicious yet.<br /><span>Give it a second.</span></li>
+            </ol>
+            <button id="appeal" class="appeal" type="button">FILE AN APPEAL</button>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>BUILT WITH ARTIFICIAL <s>INTELLIGENCE</s> INSECURITY</p>
+      <p>© <span id="year"></span> THE HOUSE · ALL RIGHTS REASSIGNED</p>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
